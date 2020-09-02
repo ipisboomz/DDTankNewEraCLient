@@ -3,13 +3,13 @@
 
 ### Disclaimer
 
-This is not official Launcher from DDTank
-This is fan made
-I am not responsible for your account damage XD, please if you like or not, use with caution.
-Community Contribution is accepted
-Please raise issueswith screenshots in https://github.com/ipisboomz/DDTankNewEraCLient/issues
+- This is not official Launcher from DDTank
+- This is fan made
+- I am not responsible for your account damage XD, please if you like or not, use with caution.
+- Community Contribution is accepted
+- Please raise issueswith screenshots in https://github.com/ipisboomz/DDTankNewEraCLient/issues
 
-Download only build from here, the code is transparent to all, no key logger, no account hacking.
+- Download only build from here, the code is transparent to all, no key logger, no account hacking.
 
 ### Play only on (HARDCODED) XD
 
