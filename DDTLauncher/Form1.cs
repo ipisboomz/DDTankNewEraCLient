@@ -10,10 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web;
+using unvell.D2DLib.WinForm;
 
 namespace DDTLauncher
 {
-    public partial class Form1 : Form
+    public partial class Form1 : D2DForm
     {
         private Boolean withRuler = false;
         private Boolean playing = false;
@@ -54,7 +55,7 @@ namespace DDTLauncher
             return swf;
         }
 
-        private void loadSwf(string server)
+        private void loadSwf(string swfUrl, int server)
         {
             AxShockwaveFlashObjects.AxShockwaveFlash axFlash;
             axFlash = new AxShockwaveFlashObjects.AxShockwaveFlash();
@@ -66,7 +67,7 @@ namespace DDTLauncher
             this.ClientSize = new Size(1000, 600);
             axFlash.EndInit();
             this.Controls.Add(axFlash);
-            axFlash.LoadMovie(0, "http://s1-ddt.7tgames.com//" + this.getSwfUrl(server));
+            axFlash.LoadMovie(0, "http://s" + server + "-ddt.7tgames.com//" + this.getSwfUrl(swfUrl));
         }
 
         private string getServerSession(string cookie, int server)
@@ -151,7 +152,7 @@ namespace DDTLauncher
 
                     string session = getServerSession(response.Headers["Set-Cookie"], server);
 
-                    this.loadSwf(session);
+                    this.loadSwf(session, server);
 
                     success = true;
                 }
@@ -164,7 +165,7 @@ namespace DDTLauncher
         private void button1_Click(object sender, EventArgs e)
         {
             panel1.Enabled = false;
-            if (!this.login(textBox1.Text, textBox2.Text, comboBox1.SelectedIndex))
+            if (!this.login(textBox1.Text, textBox2.Text, comboBox1.SelectedIndex + 1))
             {
                 panel1.Show();
                 panel1.Enabled = true;
