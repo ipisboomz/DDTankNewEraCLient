@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30406.217
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDTLauncher", "DDTLauncher\DDTLauncher.csproj", "{AED1BC63-3328-4D4B-A6EB-1DDCB4D71C10}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AED1BC63-3328-4D4B-A6EB-1DDCB4D71C10}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{AED1BC63-3328-4D4B-A6EB-1DDCB4D71C10}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{AED1BC63-3328-4D4B-A6EB-1DDCB4D71C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED1BC63-3328-4D4B-A6EB-1DDCB4D71C10}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51310AC4-EFD6-44C1-B9AD-5D580B931D08}
+	EndGlobalSection
+EndGlobal
