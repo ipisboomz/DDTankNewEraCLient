@@ -60,14 +60,21 @@ namespace DDTLauncher
             AxShockwaveFlashObjects.AxShockwaveFlash axFlash;
             axFlash = new AxShockwaveFlashObjects.AxShockwaveFlash();
             axFlash.BeginInit();
+            this.SuspendLayout();
             axFlash.Location = new Point(0, 0);
-            axFlash.Name = "Testina";
+            axFlash.Name = "Main";
             axFlash.TabIndex = 0;
             axFlash.Size = new Size(1000, 600);
             this.ClientSize = new Size(1000, 600);
             axFlash.EndInit();
+            this.ResumeLayout(false);
+
             this.Controls.Add(axFlash);
+            axFlash.WMode = "Direct";
+            axFlash.ScaleMode = 0;
+            axFlash.Quality = 0;
             axFlash.LoadMovie(0, "http://s" + server + "-ddt.7tgames.com//" + this.getSwfUrl(swfUrl));
+            axFlash.DisableLocalSecurity();
         }
 
         private string getServerSession(string cookie, int server)
