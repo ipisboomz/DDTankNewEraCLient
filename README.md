@@ -22,15 +22,6 @@ http://ddten.7tgames.com/
 - We dont have aimbot yet :p
 - We don't support hack and cheats.
 
-
-### Requirement 
-- Flash Player https://get.adobe.com/flashplayer/
-
-Optional if not running
-- .Net Framework 4.6 https://www.microsoft.com/en-US/download/details.aspx?id=48130
-
-
-
 ### Todo:
 
 - Minimap ruler ???
