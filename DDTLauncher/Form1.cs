@@ -72,7 +72,7 @@ namespace DDTLauncher
             this.Controls.Add(axFlash);
             axFlash.WMode = "Direct";
             axFlash.ScaleMode = 0;
-            axFlash.Quality = 0;
+            // axFlash.Quality = 0; // Set low quality for low-end pc
             axFlash.LoadMovie(0, "http://s" + server + "-ddt.7tgames.com//" + this.getSwfUrl(swfUrl));
             axFlash.DisableLocalSecurity();
         }
