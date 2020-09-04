@@ -1,5 +1,8 @@
 ## DDTank New Era Client Launcher for Windows
 
+## Join Discord for discussion and report issues
+
+https://discord.gg/CmucZ6
 
 ### Disclaimer
 
