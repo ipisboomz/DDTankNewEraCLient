@@ -22,6 +22,15 @@ https://visualstudio.microsoft.com/vs/community/
 
 http://ddten.7tgames.com/
 
+## Controls
+```
+Ctrl + R  = Ruler
+Ctrl + B  = Borderless
+Ctrl + F5 = Reload
+Ctrl + +  = Zoom In
+Ctrl + -  = Zoom Out
+Ctrl + P  = Screenshot
+```
 
 ### Features
 
@@ -34,8 +43,8 @@ http://ddten.7tgames.com/
 
 - Minimap ruler ???
 - Auto Clicker (Opening some item) ???
-- Screenshot and save hot key ???
-- Resize Window +/-
+- Screenshot and save hot key (Done)
+- Resize Window +/- (Done)
 
 ## Developer
 
