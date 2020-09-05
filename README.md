@@ -1,5 +1,12 @@
 ## DDTank New Era Client Launcher for Windows
 
+## Join Discord for discussion and report issues
+
+https://discord.gg/CmucZ6
+
+## Download source code and build your own
+
+https://visualstudio.microsoft.com/vs/community/
 
 ### Disclaimer
 
@@ -19,6 +26,7 @@ http://ddten.7tgames.com/
 ### Features
 
 - We have ruler just pres Ctrl+R to toggle when already on game
+- Multiple account can login, just run as many as you can
 - We dont have aimbot yet :p
 - We don't support hack and cheats.
 
@@ -27,7 +35,7 @@ http://ddten.7tgames.com/
 - Minimap ruler ???
 - Auto Clicker (Opening some item) ???
 - Screenshot and save hot key ???
-
+- Resize Window +/-
 
 ## Developer
 
