@@ -17,6 +17,7 @@ namespace DDTLauncher
 {
     public partial class Form1 : D2DForm
     {
+        const string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 Edg/86.0.622.69";
         private string protocol = "http";
         private Boolean withRuler = false;
         private Boolean playing = false;
@@ -34,12 +35,20 @@ namespace DDTLauncher
             comboBox3.SelectedIndex = 0;
         }
 
+        private HttpWebResponse MakeHttpRequest(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.UserAgent = userAgent;
+            request.CookieContainer = cookieContainer;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            return response;
+        }
+
         private string GetSwfUrl(string url)
         {
             string swf = "";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = MakeHttpRequest(url);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -56,7 +65,7 @@ namespace DDTLauncher
                 int found = data.IndexOf("Loading.swf?");
                 string left = data.Substring(found, data.Length - found);
                 found = left.IndexOf("'");
-                swf = left.Substring(0, found).replace("Loading.swf", "DDT_Loading.swf");
+                swf = left.Substring(0, found).Replace("Loading.swf", "DDT_Loading.swf");
 
                 response.Close();
                 readStream.Close();
@@ -92,10 +101,7 @@ namespace DDTLauncher
         private void SetSession()
         {
             var url = protocol + "://ddten.7tgames.com/playgame/s" + server;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = cookieContainer;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = MakeHttpRequest(url);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -134,7 +140,7 @@ namespace DDTLauncher
               + HttpUtility.UrlEncode(password);
 
             request.CookieContainer = cookieContainer;
-            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705;)";
+            request.UserAgent = userAgent;
             request.Method = "POST";
             request.KeepAlive = true;
             request.Headers.Add("Keep-Alive: 300");
