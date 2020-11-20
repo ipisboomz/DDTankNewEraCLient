@@ -56,7 +56,7 @@ namespace DDTLauncher
                 int found = data.IndexOf("Loading.swf?");
                 string left = data.Substring(found, data.Length - found);
                 found = left.IndexOf("'");
-                swf = left.Substring(0, found);
+                swf = left.Substring(0, found).replace("Loading.swf", "DDT_Loading.swf");
 
                 response.Close();
                 readStream.Close();
