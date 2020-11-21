@@ -1,5 +1,19 @@
 ## DDTank New Era Client Launcher for Windows
 
+# IMPORTANT NOTICE Today (Nov 21, 2020)
+
+
+### This launcher no longer work XD
+### Sorry 
+
+### Please support official DDTank servers instead
+
+- http://ddtank.com/
+- https://ddtank.us/
+- https://ddt.ngames.com/
+- http://www.ddtank-thai.com/
+
+
 ## Join Discord for discussion and report issues
 
 https://discord.gg/CmucZ6
