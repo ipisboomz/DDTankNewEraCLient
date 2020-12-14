@@ -10,12 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web;
-using unvell.D2DLib.WinForm;
 using System.Drawing.Imaging;
 
 namespace DDTLauncher
 {
-    public partial class Form1 : D2DForm
+    public partial class Form1 : Form
     {
         private Boolean withRuler = false;
         private Boolean playing = false;
@@ -132,6 +131,48 @@ namespace DDTLauncher
             }
         }
 
+        private Boolean SubmitForm()
+        {
+            var username = textBox1.Text;
+            var password = textBox2.Text;
+            var success = false;
+            var loginFormUrl = "http://ddten.gunnyxua.net:82/login.php";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
+
+            var postData = HttpUtility.UrlEncode("username") + "="
+              + HttpUtility.UrlEncode(username) + "&"
+              + HttpUtility.UrlEncode("password") + "="
+              + HttpUtility.UrlEncode(password) + "&login=";
+
+            request.CookieContainer = cookieContainer;
+            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705;)";
+            request.Method = "POST";
+            request.KeepAlive = true;
+            request.Headers.Add("Keep-Alive: 300");
+            request.Referer = loginFormUrl;
+            request.ContentType = "application/x-www-form-urlencoded";
+            byte[] body = Encoding.ASCII.GetBytes(postData);
+            request.ContentLength = body.Length;
+
+            Stream requestStream = request.GetRequestStream();
+            requestStream.Write(body, 0, body.Length);
+            requestStream.Close();
+
+            request.MaximumAutomaticRedirections = 1;
+            request.AllowAutoRedirect = true;
+
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                success = true;
+                MakeHttpRequest("http://ddten.gunnyxua.net:82/s"+ server + "/play.php");
+                response.Close();
+            }
+            return success;
+        }
         private Boolean SubmitLogin()
         {
             var success = false;
@@ -173,7 +214,7 @@ namespace DDTLauncher
             server = comboBox1.SelectedIndex + 1;
             quality = comboBox3.SelectedIndex == 0 ? 1 : comboBox3.SelectedIndex - 1;
             panel1.Enabled = false;
-            if (SubmitLogin() && SetSession())
+            if (SubmitForm() && SubmitLogin() && SetSession())
             {
                 LoadSwf();
                 playing = true;
