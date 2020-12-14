@@ -68,7 +68,7 @@ namespace DDTLauncher
                 readStream.Close();
             }
             Application.DoEvents();
-            Text = swf;
+            Text = "DDTank Launcher  2.0 - " + textBox1.Text;
             return swf;
         }
 

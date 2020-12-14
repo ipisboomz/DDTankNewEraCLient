@@ -179,8 +179,6 @@
             // 
             // textBox1
             // 
-            this.textBox1.AutoCompleteMode = global::DDTLauncher.Properties.Settings.Default.UsernameOrEmail;
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("AutoCompleteMode", global::DDTLauncher.Properties.Settings.Default, "UsernameOrEmail", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(48, 167);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
