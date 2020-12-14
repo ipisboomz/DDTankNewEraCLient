@@ -227,7 +227,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.RightToLeftLayout = true;
-            this.Text = "DDTank Launcher  2.0";
+            this.Text = "DDTank Launcher* 2.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.panel1.ResumeLayout(false);
