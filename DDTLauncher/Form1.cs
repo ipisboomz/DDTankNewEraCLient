@@ -17,7 +17,6 @@ namespace DDTLauncher
 {
     public partial class Form1 : D2DForm
     {
-        private string protocol = "http";
         private Boolean withRuler = false;
         private Boolean playing = false;
         private string session;
@@ -25,7 +24,7 @@ namespace DDTLauncher
         private int quality;
         private int zoom = 100;
         private AxShockwaveFlashObjects.AxShockwaveFlash axFlash;
-        private CookieContainer cookieContainer = new CookieContainer();
+        private readonly CookieContainer cookieContainer = new CookieContainer();
         public Form1()
         {
             InitializeComponent();
@@ -34,12 +33,20 @@ namespace DDTLauncher
             comboBox3.SelectedIndex = 0;
         }
 
-        private string GetSwfUrl(string url)
+        private HttpWebResponse MakeHttpRequest(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705;)";
+            request.CookieContainer = cookieContainer;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            return response;
+        }
+
+        private string GetSwfUrl()
         {
             string swf = "";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = MakeHttpRequest(session);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -53,14 +60,16 @@ namespace DDTLauncher
 
                 string data = readStream.ReadToEnd();
 
-                int found = data.IndexOf("Loading.swf?");
+                string searchString = "src=\"";
+                int found = data.IndexOf(searchString) + searchString.Length;
                 string left = data.Substring(found, data.Length - found);
-                found = left.IndexOf("'");
+                found = left.IndexOf("\"");
                 swf = left.Substring(0, found);
-
                 response.Close();
                 readStream.Close();
             }
+            Application.DoEvents();
+            Text = swf;
             return swf;
         }
 
@@ -81,21 +90,20 @@ namespace DDTLauncher
             axFlash.EndInit();
 
             this.Controls.Add(axFlash);
+            axFlash.BGColor = "#000000";
             axFlash.WMode = "Direct";
-            // axFlash.ScaleMode = 1;
-            axFlash.SetVariable("quality", "Medium");
             axFlash.Quality = quality;
-            axFlash.LoadMovie(0, protocol + "://s" + server + "-ddt.7tgames.com//" + GetSwfUrl(session));
+            axFlash.FlashVars = "editby=Classic";
+            string url = GetSwfUrl();
+            axFlash.LoadMovie(0, url);
             axFlash.DisableLocalSecurity();
         }
 
-        private void SetSession()
+        private Boolean SetSession()
         {
-            var url = protocol + "://ddten.7tgames.com/playgame/s" + server;
+            var url = "http://ddten.gunnyxua.net:82/s" + server + "/logingame.aspx";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = cookieContainer;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = MakeHttpRequest(url);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -109,49 +117,32 @@ namespace DDTLauncher
 
                 string data = readStream.ReadToEnd();
 
-                var iframeStart = "<iframe id=\"iframecontent\" name=\"iframe_game_panel\" scrolling=\"no\" frameborder=\"0\" src=\"";
-                int iframeIndex = data.IndexOf(iframeStart) + iframeStart.Length;
-                string left = data.Substring(iframeIndex, data.Length - iframeIndex);
-                iframeIndex = left.IndexOf("\"");
-
-                session = left.Substring(0, iframeIndex);
+                session = data;
 
                 response.Close();
                 readStream.Close();
+
+                Application.DoEvents();
+                return true;
+            }
+            else
+            {
+                session = "";
+                return false;
             }
         }
-        private Boolean Login(string username, string password, int serverIndex)
+
+        private Boolean SubmitLogin()
         {
-            server = serverIndex;
             var success = false;
-            var loginFormUrl = protocol + "://7tgames.com/SignIn?ReturnUrl=http%3A%2F%2Fddten.7tgames.com/playgame/s2";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
-
-            var postData = HttpUtility.UrlEncode("UsernameOrEmail") + "="
-              + HttpUtility.UrlEncode(username) + "&"
-              + HttpUtility.UrlEncode("Password") + "="
-              + HttpUtility.UrlEncode(password);
-
-            request.CookieContainer = cookieContainer;
-            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705;)";
-            request.Method = "POST";
-            request.KeepAlive = true;
-            request.Headers.Add("Keep-Alive: 300");
-            request.Referer = protocol + "://ddten.7tgames.com";
-            request.ContentType = "application/x-www-form-urlencoded";
-            byte[] body = Encoding.ASCII.GetBytes(postData);
-            request.ContentLength = body.Length;
-
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(body, 0, body.Length);
-            requestStream.Close();
-
-            request.MaximumAutomaticRedirections = 1;
-            request.AllowAutoRedirect = true;
+            var username = textBox1.Text;
+            var password = CreateMD5(textBox2.Text).ToUpper();
 
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var url = "http://ddten.gunnyxua.net:82/s" + server + "/checkuser.ashx?username=" + username
+                + "&password=" + password;
+
+            HttpWebResponse response = MakeHttpRequest(url); ;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -165,41 +156,33 @@ namespace DDTLauncher
 
                 string data = readStream.ReadToEnd();
 
-                if (data.IndexOf("\"success\"") > 0)
+                if (data == "ok")
                 {
-                    Application.DoEvents();
-                    SetSession();
-                    Application.DoEvents();
-                    if (!string.IsNullOrEmpty(session))
-                    {
-                        LoadSwf();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Unable to load session!");
-                    }
-
                     success = true;
                 }
+
                 response.Close();
                 readStream.Close();
             }
+            Application.DoEvents();
             return success;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            server = comboBox1.SelectedIndex + 1;
             quality = comboBox3.SelectedIndex == 0 ? 1 : comboBox3.SelectedIndex - 1;
             panel1.Enabled = false;
-            if (!Login(textBox1.Text, textBox2.Text, comboBox1.SelectedIndex + 1))
+            if (SubmitLogin() && SetSession())
             {
-                panel1.Enabled = true;
-                MessageBox.Show("Unable to login, please check your credentials!");
+                LoadSwf();
+                playing = true;
+                panel1.Hide();
             }
             else
             {
-                playing = true;
-                panel1.Hide();
+                panel1.Enabled = true;
+                MessageBox.Show("Unable to login, please check your credentials!");
             }
         }
 
@@ -297,6 +280,7 @@ namespace DDTLauncher
                 zoom = (comboBox2.SelectedIndex + 1) * 25;
             }
         }
+
         private void TakeScreenShot()
         {
             Point p = axFlash.PointToScreen(axFlash.Location);
@@ -315,6 +299,23 @@ namespace DDTLauncher
             tmpImg.Save(filename, ImageFormat.Jpeg);
         }
 
+        public static string CreateMD5(string input)
+        {
+            // Use input string to calculate MD5 hash
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
+        }
 
     }
 }
